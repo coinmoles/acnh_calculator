@@ -7,7 +7,7 @@ export interface NavItem {
 
 export const NAV_ITEMS: Array<NavItem> = [
     {
-        label: "재료",
+        label: "재료1",
         children: [
             { label: "ㅁ?ㄹ" },
             { label: "이슈" }
@@ -15,7 +15,7 @@ export const NAV_ITEMS: Array<NavItem> = [
         href: "#"
     },
     {
-        label: "재료",
+        label: "재료2",
         children: [
             { label: "ㅁ?ㄹ" },
             { label: "이슈" }

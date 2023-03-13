@@ -1,12 +1,16 @@
-export type Item = string
+export type Item = {
+    itemName: string
+    itemIcon: string
+    obtainMethod?: string
+    DIYable?: boolean
+}
 
-export interface Ingredient {
+export interface ItemWithQuantity {
     item: Item
     quantity: number
-    DIYable: boolean
 }
 
 export interface Recipe {
     result: Item
-    ingredientList: Ingredient[]
+    ingredientList: ItemWithQuantity[]
 }
