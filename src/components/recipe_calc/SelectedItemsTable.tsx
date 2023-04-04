@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
+import { ChevronLeftIcon, ChevronRightIcon, SmallCloseIcon } from "@chakra-ui/icons"
 import { HStack, IconButton, Input, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
 import React from "react"
 import { ItemWithQuantity } from "../../utils/types/Item"
@@ -81,7 +81,14 @@ export const SelectedItemTable = (props: {
                 </HStack>
               </Td>
               <Td>
-
+                  <IconButton 
+                    colorScheme={"red"}
+                    aria-label="delete"
+                    onClick={() => {
+                      removeSelectedItem(itemQ)
+                    }}
+                    icon={<SmallCloseIcon />}
+                  />
               </Td>
             </Tr>
           )
