@@ -9,12 +9,12 @@ const ComboboxInput = forwardRef<HTMLInputElement>((props, ref) => {
   return <Input {...props} ref={ref} />
 })
 
-const ComboboxList = forwardRef<HTMLUListElement, { isOpen: boolean, }>(({isOpen, ...props}, ref) => {
-  return <List display={isOpen ? undefined : "none"} {...props} ref={ref}/>
+const ComboboxList = forwardRef<HTMLUListElement, { isOpen: boolean, }>(({ isOpen, ...props }, ref) => {
+  return <List display={isOpen ? undefined : "none"} {...props} ref={ref} />
 })
 
 const ComboboxItem = forwardRef<HTMLLIElement, { itemIndex: number, highlightedIndex: number }>(
-  ({ itemIndex, highlightedIndex, ...props}, ref) => {
+  ({ itemIndex, highlightedIndex, ...props }, ref) => {
     return (
       <ListItem
         px={3}
@@ -50,14 +50,14 @@ export const SearchBar = (props: {
       quantity: 1
     }])
   }
-  
+
   const {
     getSelectedItemProps,
     getDropdownProps,
     removeSelectedItem
   } = useMultipleSelection({
     selectedItems,
-    onStateChange({selectedItems: newSelectedItems, type}) {
+    onStateChange({ selectedItems: newSelectedItems, type }) {
       switch (type) {
         case useMultipleSelection.stateChangeTypes.SelectedItemKeyDownDelete:
         case useMultipleSelection.stateChangeTypes.FunctionRemoveSelectedItem:
@@ -87,7 +87,7 @@ export const SearchBar = (props: {
     defaultHighlightedIndex: 0,
     selectedItem: null,
     stateReducer(state, actionAndChanges) {
-      const {changes, type} = actionAndChanges
+      const { changes, type } = actionAndChanges
       switch (type) {
         case useCombobox.stateChangeTypes.InputKeyDownEnter:
         case useCombobox.stateChangeTypes.ItemClick:
@@ -106,7 +106,7 @@ export const SearchBar = (props: {
         case useCombobox.stateChangeTypes.ItemClick:
         case useCombobox.stateChangeTypes.InputBlur:
           if (newSelectedItem && !checkSelected(newSelectedItem)) {
-              addSelectedItem(newSelectedItem)
+            addSelectedItem(newSelectedItem)
           }
       }
     },
@@ -114,15 +114,6 @@ export const SearchBar = (props: {
 
   return (
     <Flex direction="column" alignItems="left">
-      <Flex direction="row">
-        <List>
-          {selectedItems.map((iwQ => (
-            <ListItem key={iwQ.item.itemName}>
-              {iwQ.item.itemName}
-            </ListItem>
-          )))}
-        </List>
-      </Flex>
       <Text as='label' {...getLabelProps()} textAlign="left" className="py-2">
         아이템 검색
       </Text>
@@ -130,7 +121,7 @@ export const SearchBar = (props: {
         <InputGroup size={{ base: "sm", md: "md" }}>
           <ComboboxInput
             placeholder="아이템 이름을 입력하세요..."
-            {...getInputProps(getDropdownProps({preventKeyAction: isOpen, ref: inputRef}))}
+            {...getInputProps(getDropdownProps({ preventKeyAction: isOpen, ref: inputRef }))}
           />
           <InputRightElement>
             <IconButton
