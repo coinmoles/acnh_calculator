@@ -1,6 +1,6 @@
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons"
 import { Flex, IconButton, Input, InputGroup, InputRightElement, List, ListItem, Text } from "@chakra-ui/react"
-import { useCombobox, useMultipleSelection } from "downshift"
+import { GetPropsCommonOptions, useCombobox, useMultipleSelection, UseMultipleSelectionGetDropdownProps } from "downshift"
 import React, { forwardRef, useMemo, useRef, useState } from "react"
 import { getFilteredItemList } from "../../utils/data/itemList"
 import { Item, ItemWithQuantity } from "../../utils/types/Item"
@@ -30,9 +30,10 @@ const ComboboxItem = forwardRef<HTMLLIElement, { itemIndex: number, highlightedI
 
 export const SearchBar = (props: {
   selectedItems: ItemWithQuantity[],
-  setSelectedItems: React.Dispatch<React.SetStateAction<ItemWithQuantity[]>>
+  setSelectedItems: React.Dispatch<React.SetStateAction<ItemWithQuantity[]>>,
+  getDropDownProps: (options?: UseMultipleSelectionGetDropdownProps | undefined, extraOptions?: GetPropsCommonOptions | undefined) => any
 }) => {
-  const { selectedItems, setSelectedItems } = props
+  const { selectedItems, setSelectedItems, getDropDownProps } = props
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null)
   const items = useMemo(
@@ -50,25 +51,6 @@ export const SearchBar = (props: {
       quantity: 1
     }])
   }
-
-  const {
-    getSelectedItemProps,
-    getDropdownProps,
-    removeSelectedItem
-  } = useMultipleSelection({
-    selectedItems,
-    onStateChange({ selectedItems: newSelectedItems, type }) {
-      switch (type) {
-        case useMultipleSelection.stateChangeTypes.SelectedItemKeyDownDelete:
-        case useMultipleSelection.stateChangeTypes.FunctionRemoveSelectedItem:
-          if (newSelectedItems)
-            setSelectedItems(newSelectedItems)
-          break
-        default:
-          break
-      }
-    }
-  })
 
   const {
     isOpen,
@@ -121,7 +103,7 @@ export const SearchBar = (props: {
         <InputGroup size={{ base: "sm", md: "md" }}>
           <ComboboxInput
             placeholder="아이템 이름을 입력하세요..."
-            {...getInputProps(getDropdownProps({ preventKeyAction: isOpen, ref: inputRef }))}
+            {...getInputProps(getDropDownProps({ preventKeyAction: isOpen, ref: inputRef }))}
           />
           <InputRightElement>
             <IconButton

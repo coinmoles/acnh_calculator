@@ -1,22 +1,22 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
-import { IconButton, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
+import { HStack, IconButton, Input, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
 import React from "react"
 import { ItemWithQuantity } from "../../utils/types/Item"
 
 export const SelectedItemTable = (props: {
   selectedItems: ItemWithQuantity[],
   setSelectedItems: React.Dispatch<React.SetStateAction<ItemWithQuantity[]>>
+  removeSelectedItem: (item: ItemWithQuantity) => void
 }) => {
-  const { selectedItems, setSelectedItems } = props
+  const { selectedItems, setSelectedItems, removeSelectedItem } = props
 
-  const changeQuantitySelectedItem = (incrementedItemName: string, quantityChange: 1 | -1) => {
+  const changeQuantitySelectedItem = (incrementedItemName: string, newQuantity: number) => {
     const quantityChanger = (result: ItemWithQuantity[], itemQ: ItemWithQuantity) => {
       if (itemQ.item.itemName === incrementedItemName){
-        if (itemQ.quantity + quantityChange !== 0)
-          result.push({
-            item: itemQ.item,
-            quantity: itemQ.quantity + quantityChange
-          })
+        result.push({
+          item: itemQ.item,
+          quantity: newQuantity
+        })
       }
       else
         result.push(itemQ)
@@ -33,7 +33,8 @@ export const SelectedItemTable = (props: {
         <Tr>
           <Th width="10%"></Th>
           <Th width="60%">아이템</Th>
-          <Th width="30%">개수</Th>
+          <Th width="20%">개수</Th>
+          <Th width="10%"></Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -43,9 +44,44 @@ export const SelectedItemTable = (props: {
               <Td></Td>
               <Td>{itemQ.item.itemName}</Td>
               <Td>
-                <IconButton variant={"ghost"} aria-label="decrease" onClick={() => {changeQuantitySelectedItem(itemQ.item.itemName, -1)}} icon={<ChevronLeftIcon />} />
-                {itemQ.quantity}
-                <IconButton variant={"ghost"} aria-label="increase" onClick={() => {changeQuantitySelectedItem(itemQ.item.itemName, +1)}} icon={<ChevronRightIcon />} />
+                <HStack>
+                <IconButton 
+                  variant="ghost" 
+                  aria-label="decrease" 
+                  onClick={() => {
+                    if (itemQ.quantity > 1)
+                      changeQuantitySelectedItem(itemQ.item.itemName, itemQ.quantity - 1)
+                    else
+                      removeSelectedItem(itemQ)
+                  }}
+                  icon={<ChevronLeftIcon />} 
+                />
+                <Input 
+                  type="number"
+                  textAlign="center"
+                  variant="unstyled"
+                  value={itemQ.quantity} 
+                  onChange={(e) => {
+                    changeQuantitySelectedItem(itemQ.item.itemName, Number(e.target.value))
+                  }}
+                  onBlur={() => {
+                    if (itemQ.quantity === 0) {
+                      removeSelectedItem(itemQ)
+                    }
+                  }}
+                />
+                <IconButton  
+                  variant="ghost"
+                  aria-label="increase" 
+                  onClick={() => {
+                    changeQuantitySelectedItem(itemQ.item.itemName, itemQ.quantity + 1)
+                  }}
+                  icon={<ChevronRightIcon />}
+                />
+                </HStack>
+              </Td>
+              <Td>
+
               </Td>
             </Tr>
           )
