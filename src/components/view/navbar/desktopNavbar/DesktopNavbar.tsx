@@ -3,7 +3,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@chakra-ui/popover";
 import React from "react";
 import { useBackgroundColor, useTextColor, useTextColorBold } from "../../../../utils/color";
 import { NAV_ITEMS } from "../NavItem";
-import { DesktopSubNav } from "./DsktopSubNav";
+import { DesktopSubNav } from "./DesktopSubNav";
 
 export const DesktopNavbar: React.FC = () => {
   const textColor = useTextColor();
@@ -37,7 +37,8 @@ export const DesktopNavbar: React.FC = () => {
                 bg={backgroundColor}
                 p={4}
                 rounded={'xl'}
-                minW={'sm'}>
+                minW={'sm'}
+              >
                 <Stack>
                   {navItem.children.map((child) => (
                     <DesktopSubNav key={child.label} {...child} />

@@ -7,7 +7,7 @@ import {
   useDisclosure
 } from '@chakra-ui/react';
 import React from 'react';
-import { useBackgroundColor, useBorderColor, useTextColor, useTextColorBold } from '../../../utils/color';
+import { useBackgroundColorNavBar, useBorderColor, useTextColor, useTextColorBold } from '../../../utils/color';
 import { DesktopNavbar } from './desktopNavbar/DesktopNavbar';
 import { MobileNavbar } from './mobileNavbar/MobileNavbar';
 
@@ -17,7 +17,7 @@ export const Navbar: React.FC = () => {
   return (
     <Box>
       <Flex
-        bg={useBackgroundColor()}
+        bg={useBackgroundColorNavBar()}
         color={useTextColor()}
         minH={'60px'}
         py={{ base: 2 }}

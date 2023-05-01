@@ -1,5 +1,9 @@
 import { useColorModeValue } from "@chakra-ui/react"
 
+export const useBackgroundColorNavBar = () => {
+    return useColorModeValue('gray.100', 'white')
+}
+
 export const useBackgroundColor = () => {
     return useColorModeValue('white', 'gray.800')
 }
@@ -14,6 +18,10 @@ export const useTextColorBold = () => {
 
 export const useTextColor = () => {
     return useColorModeValue('gray.600', 'white')
+}
+
+export const useTextColorLink = () => {
+    return useColorModeValue('pink.400', 'gray.900')
 }
 
 export const useBorderColor = () => {

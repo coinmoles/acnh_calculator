@@ -1,3 +1,4 @@
+import { Box, Divider, Heading } from "@chakra-ui/react"
 import { useMultipleSelection } from "downshift"
 import { useState } from "react"
 import { ItemWithQuantity } from "../../utils/types/Item"
@@ -7,7 +8,7 @@ import { SelectedItemTable } from "./SelectedItemsTable"
 
 const RecipeCalc = () => {
   const [selectedItems, setSelectedItems] = useState<ItemWithQuantity[]>([])
-  
+
   const {
     getDropdownProps,
     removeSelectedItem
@@ -27,18 +28,22 @@ const RecipeCalc = () => {
   })
 
   return (
-    <div>
+    <Box overflow={"hidden"}>
+      <Heading paddingY={5} textAlign="left" as="h1">
+        목적 아이템
+      </Heading>
       <SearchBar
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
         getDropDownProps={getDropdownProps}
       />
+      <Divider padding={3}/>
       <SelectedItemTable
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
         removeSelectedItem={removeSelectedItem}
       />
-    </div>
+    </Box>
   )
 }
 

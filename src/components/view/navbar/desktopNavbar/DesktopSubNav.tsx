@@ -1,11 +1,12 @@
 import { Icon } from "@chakra-ui/icon";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Flex, Link, Stack, Text } from "@chakra-ui/layout";
-import { useBackgroundColorLink } from "../../../../utils/color";
+import { useBackgroundColorLink, useTextColorLink } from "../../../../utils/color";
 import { NavItem } from "../NavItem";
 
 export const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   const backgroundColorLink = useBackgroundColorLink()
+  const textColorLink = useTextColorLink()
   
   return (
     <Link
@@ -19,7 +20,7 @@ export const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
         <Box>
           <Text
             transition={'all .3s ease'}
-            _groupHover={{ color: 'pink.400' }}
+            _groupHover={{ color: textColorLink }}
             fontWeight={500}>
             {label}
           </Text>

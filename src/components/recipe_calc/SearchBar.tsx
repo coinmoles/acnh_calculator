@@ -1,7 +1,8 @@
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons"
-import { Flex, IconButton, Input, InputGroup, InputRightElement, List, ListItem, Text } from "@chakra-ui/react"
-import { GetPropsCommonOptions, useCombobox, useMultipleSelection, UseMultipleSelectionGetDropdownProps } from "downshift"
+import { Flex, IconButton, Input, InputGroup, InputRightElement, List, ListItem, Popover, PopoverContent, PopoverTrigger, Text } from "@chakra-ui/react"
+import { GetPropsCommonOptions, UseMultipleSelectionGetDropdownProps, useCombobox } from "downshift"
 import React, { forwardRef, useMemo, useRef, useState } from "react"
+import { useBackgroundColor, useBackgroundColorLink, useTextColor, useTextColorLink } from "../../utils/color"
 import { getFilteredItemList } from "../../utils/data/itemList"
 import { Item, ItemWithQuantity } from "../../utils/types/Item"
 
@@ -15,12 +16,19 @@ const ComboboxList = forwardRef<HTMLUListElement, { isOpen: boolean, }>(({ isOpe
 
 const ComboboxItem = forwardRef<HTMLLIElement, { itemIndex: number, highlightedIndex: number }>(
   ({ itemIndex, highlightedIndex, ...props }, ref) => {
+    const backgroundColorLink = useBackgroundColorLink()
+    const textColorLink = useTextColorLink()
+    const backgroundColor = useBackgroundColor()
+    const textColor = useTextColor()
+
     return (
       <ListItem
         px={3}
         py={2}
         cursor="pointer"
-        bg={itemIndex === highlightedIndex ? "teal.100" : undefined}
+        bg={itemIndex === highlightedIndex ? backgroundColorLink : backgroundColor}
+        fontSize={{md: 'md', base: 'sm'}}
+        textColor={itemIndex === highlightedIndex ? textColorLink : textColor}
         {...props}
         ref={ref}
       />
@@ -34,7 +42,7 @@ export const SearchBar = (props: {
   getDropDownProps: (options?: UseMultipleSelectionGetDropdownProps | undefined, extraOptions?: GetPropsCommonOptions | undefined) => any
 }) => {
   const { selectedItems, setSelectedItems, getDropDownProps } = props
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, ] = useState("");
   const inputRef = useRef<HTMLInputElement>(null)
   const items = useMemo(
     () => getFilteredItemList(inputValue),
@@ -99,38 +107,48 @@ export const SearchBar = (props: {
       <Text as='label' {...getLabelProps()} textAlign="left" className="py-2">
         아이템 검색
       </Text>
-      <Flex direction="column" flex="1 1 auto">
-        <InputGroup size={{ base: "sm", md: "md" }}>
-          <ComboboxInput
-            placeholder="아이템 이름을 입력하세요..."
-            {...getInputProps(getDropDownProps({ preventKeyAction: isOpen, ref: inputRef }))}
-          />
-          <InputRightElement>
-            <IconButton
-              size={{ base: "sm", md: "md" }}
-              aria-label="toggle menu"
-              type="button"
-              {...getToggleButtonProps()}
-              icon={isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
+      <Popover isOpen={isOpen} placement={'bottom-start'}>
+        <PopoverTrigger>
+          <InputGroup size={{ base: "sm", md: "md" }}>
+            <ComboboxInput
+              placeholder="아이템 이름을 입력하세요..."
+              {...getInputProps(getDropDownProps({ preventKeyAction: isOpen, ref: inputRef }))}
             />
-          </InputRightElement>
-        </InputGroup>
-        <ComboboxList isOpen={isOpen} {...getMenuProps()}>
-          {isOpen &&
-            items.map((item, index) => (
-              <ComboboxItem
-                itemIndex={index}
-                highlightedIndex={highlightedIndex}
-                key={index}
-                fontWeight={item === selectedItem ? "bold" : undefined}
-                {...getItemProps({ item, index })}
-              >
-                <span>{item.itemName}</span>
-              </ComboboxItem>
-            ))
-          }
-        </ComboboxList>
-      </Flex>
+            <InputRightElement>
+              <IconButton
+                size={{ base: "sm", md: "md" }}
+                aria-label="toggle menu"
+                type="button"
+                {...getToggleButtonProps()}
+                icon={isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
+              />
+            </InputRightElement>
+          </InputGroup>
+        </PopoverTrigger>
+        <PopoverContent
+          border={0}
+          boxShadow={'xl'}
+          p={4}
+          rounded={'xl'}
+          minW={'full'}
+        >
+          <ComboboxList isOpen={isOpen} {...getMenuProps()}>
+            {isOpen &&
+              items.map((item, index) => (
+                <ComboboxItem
+                  itemIndex={index}
+                  highlightedIndex={highlightedIndex}
+                  key={index}
+                  fontWeight={item === selectedItem ? "bold" : undefined}
+                  {...getItemProps({ item, index })}
+                >
+                  <span>{item.itemName}</span>
+                </ComboboxItem>
+              ))
+            }
+          </ComboboxList>
+        </PopoverContent>
+      </Popover>
     </Flex>
   )
 }
